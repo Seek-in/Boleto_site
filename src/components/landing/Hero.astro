@@ -1,0 +1,322 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+
+const QR_SIZE = 21;
+
+function inFinderZone(x: number, y: number): boolean {
+  if (x < 8 && y < 8) return true;
+  if (x >= QR_SIZE - 8 && y < 8) return true;
+  if (x < 8 && y >= QR_SIZE - 8) return true;
+  return false;
+}
+
+function buildQrModules(): boolean[][] {
+  const grid = Array.from({ length: QR_SIZE }, () => Array<boolean>(QR_SIZE).fill(false));
+
+  const setFinder = (ox: number, oy: number) => {
+    for (let y = 0; y < 7; y++) {
+      for (let x = 0; x < 7; x++) {
+        const edge = x === 0 || x === 6 || y === 0 || y === 6;
+        const inner = x >= 2 && x <= 4 && y >= 2 && y <= 4;
+        grid[oy + y][ox + x] = edge || inner;
+      }
+    }
+  };
+
+  setFinder(0, 0);
+  setFinder(QR_SIZE - 7, 0);
+  setFinder(0, QR_SIZE - 7);
+
+  for (let i = 8; i < QR_SIZE - 8; i++) {
+    grid[6][i] = i % 2 === 0;
+    grid[i][6] = i % 2 === 0;
+  }
+
+  for (let y = 0; y < QR_SIZE; y++) {
+    for (let x = 0; x < QR_SIZE; x++) {
+      if (grid[y][x] || inFinderZone(x, y)) continue;
+      if (x >= 8 && x <= 12 && y >= 8 && y <= 12) continue;
+      grid[y][x] = (x * 17 + y * 31 + x * y) % 5 < 2;
+    }
+  }
+
+  return grid;
+}
+
+const qrModules = buildQrModules();
+---
+
+<section class="hero">
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <div class="hero__badge">
+        <span class="hero__badge-dot" aria-hidden="true"></span>
+        Fidélité locale, ludique et récompensée
+      </div>
+      <h1 class="hero__title">
+        Chaque achat te rapproche<br />
+        <span class="hero__title-accent">de la victoire</span>
+      </h1>
+      <p class="hero__subtitle">
+        Scanne ton QR code unique chez les commerces partenaires.
+        Cumule des points, des tampons et des récompenses — à chaque passage en caisse.
+      </p>
+      <div class="hero__cta">
+        <Button variant="primary" size="lg" href="/telecharger">Télécharger l'app</Button>
+      </div>
+      <Button variant="ghost" data-modal-open="how-it-works-modal" class="hero__learn">
+        Comment ça marche ?
+      </Button>
+    </div>
+
+    <div class="hero__mockup" aria-hidden="true">
+      <div class="hero__phone">
+        <div class="hero__phone-notch"></div>
+        <div class="hero__phone-screen">
+          <div class="hero__progress">
+            <span>29j 03h</span>
+            <div class="hero__progress-bar">
+              <div class="hero__progress-fill"></div>
+              <span class="hero__progress-thumb"><Icon name="smiley" size={16} /></span>
+            </div>
+            <Icon name="crown" size={16} />
+          </div>
+          <div class="hero__qr-card">
+            <p class="hero__qr-title">TON QR CODE UNIQUE</p>
+            <div class="hero__qr">
+              <div class="hero__qr-grid" style={`--qr-cols: ${QR_SIZE}`}>
+                {qrModules.flatMap((row) =>
+                  row.map((dark) => (
+                    <span class:list={['hero__qr-cell', { 'hero__qr-cell--dark': dark }]} />
+                  ))
+                )}
+              </div>
+              <span class="hero__qr-smiley">
+                <svg width="32" height="32" viewBox="0 0 76 76" fill="none" aria-hidden="true">
+                  <circle cx="38" cy="38" r="38" fill="#FFC93C"/>
+                  <circle cx="26.5" cy="31" r="4.8" fill="#2D2235"/>
+                  <circle cx="49.5" cy="31" r="4.8" fill="#2D2235"/>
+                  <path d="M23 46.5c4.2 5.8 22.8 5.8 27 0" stroke="#2D2235" stroke-width="4.2" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </div>
+            <p class="hero__qr-hint">Fais scanner ton QR à chaque achat !</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-10) var(--space-12);
+    overflow: hidden;
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-10);
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: clamp(var(--space-8), 4vw, var(--space-16));
+    }
+
+    .hero__content {
+      flex: 0 1 auto;
+      max-width: 36rem;
+    }
+
+    .hero__mockup {
+      flex: 0 0 auto;
+    }
+  }
+
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--color-bg-lavender);
+    color: var(--color-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__badge-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .hero__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-text);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__title-accent { color: var(--color-secondary); }
+
+  .hero__subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 32rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__cta { margin-bottom: var(--space-4); }
+
+  .hero__mockup {
+    display: block;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__mockup {
+      margin-inline: 0;
+    }
+  }
+
+  .hero__phone {
+    width: 280px;
+    background: var(--color-bg-dark);
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow: var(--shadow-lg), 0 0 0 4px rgba(255, 201, 60, 0.2);
+  }
+
+  .hero__phone-notch {
+    width: 80px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    margin: 0 auto var(--space-3);
+  }
+
+  .hero__phone-screen {
+    background: var(--color-bg);
+    border-radius: 28px;
+    padding: var(--space-4);
+    min-height: 420px;
+  }
+
+  .hero__progress {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-md);
+    position: relative;
+  }
+
+  .hero__progress-fill {
+    width: 65%;
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .hero__progress-thumb {
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero__qr-card {
+    background: white;
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .hero__qr-title {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__qr {
+    position: relative;
+    width: 168px;
+    height: 168px;
+    margin: 0 auto var(--space-4);
+    border: 3px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    background: white;
+  }
+
+  .hero__qr-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--qr-cols), 1fr);
+    gap: 1px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__qr-cell {
+    background: white;
+    border-radius: 0;
+  }
+
+  .hero__qr-cell--dark { background: var(--color-text); }
+
+  .hero__qr-smiley {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .hero__qr-smiley svg {
+    display: block;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 6px;
+    padding: 2px;
+    box-shadow: 0 0 0 3px white;
+  }
+
+  .hero__qr-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+</style>

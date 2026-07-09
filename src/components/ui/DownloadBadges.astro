@@ -1,0 +1,89 @@
+---
+interface Props {
+  class?: string;
+  storeLinks?: boolean;
+}
+
+const { class: className, storeLinks = false } = Astro.props;
+const href = storeLinks ? '#' : '/telecharger';
+---
+
+<div class:list={['download-badges', className]}>
+  <a href={href} class="download-badge" aria-label="Télécharger sur l'App Store">
+    <svg class="download-badge__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+    </svg>
+    <span class="download-badge__text">
+      <span class="download-badge__small">Télécharger sur</span>
+      <span class="download-badge__big">App Store</span>
+    </span>
+  </a>
+
+  <a href={href} class="download-badge" aria-label="Télécharger sur Google Play">
+    <svg class="download-badge__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M3.609 1.814L13.792 12 3.61 22.186a1.372 1.372 0 0 1-.465-.528 1.35 1.35 0 0 1-.12-.62V2.962c0-.22.04-.43.12-.62a1.35 1.35 0 0 1 .465-.528M14.5 12.707l2.302 2.302-10.937 6.333 8.635-8.635M16.697 10.51l2.807 1.62a1.35 1.35 0 0 1 0 2.34l-2.807 1.62L12.792 12l3.905-1.49M5.865 2.658L14.5 9.293 12.198 11.595 3.61 1.814"/>
+    </svg>
+    <span class="download-badge__text">
+      <span class="download-badge__small">Disponible sur</span>
+      <span class="download-badge__big">Google Play</span>
+    </span>
+  </a>
+</div>
+
+<style>
+  .download-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .download-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-5);
+    background: var(--color-bg-dark);
+    color: white;
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    min-width: 160px;
+  }
+
+  .download-badge:hover {
+    background: var(--color-secondary-dk);
+    transform: translateY(-2px);
+  }
+
+  .download-badge__icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .download-badge__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .download-badge__small {
+    font-size: 0.65rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  .download-badge__big {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+  }
+
+  /* Variante claire pour fond sombre du footer */
+  :global(.footer) .download-badge {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  :global(.footer) .download-badge:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+</style>

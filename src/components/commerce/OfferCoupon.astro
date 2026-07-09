@@ -1,0 +1,130 @@
+---
+import Badge from '../ui/Badge.astro';
+import Icon from '../ui/Icon.astro';
+import type { Offer } from '../../data/commerces';
+
+interface Props {
+  offer: Offer;
+  compact?: boolean;
+}
+
+const { offer, compact = false } = Astro.props;
+---
+
+<div class:list={['coupon', { 'coupon--compact': compact }]}>
+  <div class="coupon__perforation" aria-hidden="true"></div>
+  <div class="coupon__icon-wrap">
+    <Icon name="tag" size={compact ? 18 : 22} />
+  </div>
+  <p class="coupon__title">{offer.title}</p>
+  <p class="coupon__subtitle">{offer.subtitle}</p>
+  {offer.stamps && (
+    <div class="coupon__stamps" aria-label={`${offer.stamps.current} sur ${offer.stamps.total} tampons`}>
+      {Array.from({ length: offer.stamps.total }, (_, i) => (
+        <span
+          class:list={['coupon__stamp', { 'coupon__stamp--filled': i < offer.stamps!.current }]}
+          aria-hidden="true"
+        >
+          {i < offer.stamps!.current && <Icon name="star" size={10} />}
+        </span>
+      ))}
+    </div>
+  )}
+  <Badge variant="points" class="coupon__badge">+{offer.points} pts</Badge>
+</div>
+
+<style>
+  .coupon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-2) var(--space-4);
+    min-width: 100px;
+    flex: 1;
+    gap: var(--space-1);
+  }
+
+  .coupon__perforation {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    border-top: 2px dashed var(--color-border);
+  }
+
+  .coupon__icon-wrap {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-1);
+    color: var(--color-secondary);
+  }
+
+  .coupon__title {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .coupon__subtitle {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .coupon__stamps {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-1);
+  }
+
+  .coupon__stamp {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .coupon__stamp--filled {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    border-style: solid;
+  }
+
+  .coupon__stamp--filled :global(.icon) {
+    color: white;
+  }
+
+  .coupon__badge {
+    margin-top: var(--space-2);
+  }
+
+  .coupon--compact {
+    min-width: 80px;
+    padding: var(--space-2);
+  }
+
+  .coupon--compact .coupon__icon-wrap {
+    width: 36px;
+    height: 36px;
+  }
+</style>

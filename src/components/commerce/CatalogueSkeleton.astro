@@ -1,0 +1,116 @@
+---
+/** Fond squelette — cartes ticket fantômes, visibles, estompées vers le bas */
+---
+
+<div class="catalogue-skeleton" aria-hidden="true">
+  <div class="catalogue-skeleton__grid">
+    {Array.from({ length: 6 }).map(() => (
+      <div class="catalogue-skeleton__card">
+        <div class="catalogue-skeleton__hero"></div>
+        <div class="catalogue-skeleton__ticket">
+          <div class="catalogue-skeleton__notch catalogue-skeleton__notch--left"></div>
+          <div class="catalogue-skeleton__notch catalogue-skeleton__notch--right"></div>
+          <div class="catalogue-skeleton__coupons">
+            <div class="catalogue-skeleton__coupon"></div>
+            <div class="catalogue-skeleton__coupon"></div>
+            <div class="catalogue-skeleton__coupon"></div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="catalogue-skeleton__fade"></div>
+</div>
+
+<style>
+  .catalogue-skeleton {
+    position: relative;
+    width: 100%;
+    min-height: 560px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .catalogue-skeleton__grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    opacity: 0.88;
+  }
+
+  @media (min-width: 640px) {
+    .catalogue-skeleton__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .catalogue-skeleton__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .catalogue-skeleton__card {
+    background: var(--color-bg-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .catalogue-skeleton__hero {
+    height: 140px;
+    background: linear-gradient(
+      135deg,
+      var(--color-bg-lavender) 0%,
+      #EDE4F5 50%,
+      var(--color-bg-card) 100%
+    );
+  }
+
+  .catalogue-skeleton__ticket {
+    position: relative;
+    background: var(--color-bg-card);
+    padding: var(--space-4) var(--space-3);
+    border-top: 2px dashed #D8CFE8;
+  }
+
+  .catalogue-skeleton__notch {
+    position: absolute;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    background: var(--color-bg);
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+  }
+
+  .catalogue-skeleton__notch--left { left: -10px; }
+  .catalogue-skeleton__notch--right { right: -10px; }
+
+  .catalogue-skeleton__coupons {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .catalogue-skeleton__coupon {
+    flex: 1;
+    height: 76px;
+    background: var(--color-bg-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .catalogue-skeleton__fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 249, 240, 0.15) 45%,
+      rgba(255, 249, 240, 0.65) 72%,
+      var(--color-bg) 100%
+    );
+    pointer-events: none;
+  }
+</style>

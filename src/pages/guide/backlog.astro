@@ -1,0 +1,12 @@
+---
+import { marked } from 'marked';
+import GuideLayout from '../../layouts/GuideLayout.astro';
+import { readGuideMarkdown } from '../../lib/guide-icons';
+
+const markdown = readGuideMarkdown('icones_backlog.md');
+const html = marked.parse(markdown);
+---
+
+<GuideLayout title="Backlog icônes" description="Backlog des icônes par catégorie de commerce">
+  <article class="guide-prose" set:html={html} />
+</GuideLayout>

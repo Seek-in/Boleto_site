@@ -1,0 +1,114 @@
+---
+import SectionTitle from '../ui/SectionTitle.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="section benefits">
+  <div class="container">
+    <SectionTitle
+      title="À chaque achat, tu gagnes plusieurs choses"
+      subtitle="Boleto cumule les récompenses pour que chaque passage en caisse soit une petite victoire."
+      centered
+    />
+
+    <div class="benefits__grid">
+      <article class="benefits__card">
+        <div class="benefits__icon"><Icon name="ticket" size={32} /></div>
+        <h3 class="benefits__title">Offres des commerces</h3>
+        <p class="benefits__desc">
+          Tampons, réductions et cadeaux chez chaque partenaire. Carte complète = récompense débloquée !
+        </p>
+      </article>
+
+      <article class="benefits__card benefits__card--highlight">
+        <div class="benefits__icon"><Icon name="star" size={32} /></div>
+        <h3 class="benefits__title">Points Boleto</h3>
+        <p class="benefits__desc">
+          +10 points à chaque scan, cumulables sur toute l'app. Plus tu achètes, plus tu montes au classement.
+        </p>
+      </article>
+
+      <article class="benefits__card">
+        <div class="benefits__icon"><Icon name="flag" size={32} /></div>
+        <h3 class="benefits__title">Défis temporaires</h3>
+        <p class="benefits__desc">
+          Relève des défis exclusifs — visite 3 commerces, reviens 7 jours d'affilée — et gagne des points bonus.
+        </p>
+      </article>
+
+      <article class="benefits__card">
+        <div class="benefits__icon"><Icon name="crown" size={32} /></div>
+        <h3 class="benefits__title">Course au premier</h3>
+        <p class="benefits__desc">
+          Sois 1er du classement à la fin du compte à rebours et remporte le gros lot du mois. Pas de tirage au sort !
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .benefits__grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .benefits__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1024px) {
+    .benefits__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .benefits__card {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    text-align: center;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .benefits__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .benefits__card--highlight {
+    background: var(--color-bg-lavender);
+    border-color: var(--color-secondary);
+  }
+
+  .benefits__icon {
+    width: 56px;
+    height: 56px;
+    margin-inline: auto;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    color: var(--color-secondary);
+  }
+
+  .benefits__card--highlight .benefits__icon {
+    background: var(--color-primary);
+    color: var(--color-text);
+  }
+
+  .benefits__title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .benefits__desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+</style>

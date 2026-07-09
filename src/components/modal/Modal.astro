@@ -1,0 +1,171 @@
+---
+interface Props {
+  id: string;
+  title?: string;
+  size?: 'md' | 'lg' | 'full';
+}
+
+const { id, title, size = 'lg' } = Astro.props;
+---
+
+<div
+  class="modal"
+  id={id}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={title ? `${id}-title` : undefined}
+  aria-hidden="true"
+  hidden
+>
+  <div class="modal__backdrop" data-modal-close aria-hidden="true"></div>
+  <div class:list={['modal__panel', `modal__panel--${size}`]}>
+    <div class="modal__header">
+      {title && <h2 class="modal__title" id={`${id}-title`}>{title}</h2>}
+      <button
+        type="button"
+        class="modal__close"
+        data-modal-close
+        aria-label="Fermer"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal__content">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-modal), visibility var(--transition-modal);
+  }
+
+  .modal[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(36, 26, 48, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal__panel {
+    position: relative;
+    background: var(--color-bg-white);
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    width: 100%;
+    max-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform var(--transition-modal);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .modal[aria-hidden="false"] .modal__panel {
+    transform: translateY(0);
+  }
+
+  @media (min-width: 640px) {
+    .modal {
+      align-items: center;
+      padding: var(--space-4);
+    }
+
+    .modal__panel {
+      border-radius: var(--radius-card);
+      max-height: 90vh;
+      transform: translateY(20px) scale(0.97);
+    }
+
+    .modal[aria-hidden="false"] .modal__panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal__panel--md {
+      max-width: 480px;
+    }
+
+    .modal__panel--lg {
+      max-width: 640px;
+    }
+
+    .modal__panel--full {
+      max-width: 800px;
+    }
+  }
+
+  .modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .modal__title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .modal__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    transition: background var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .modal__close:hover {
+    background: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .modal__content {
+    overflow-y: auto;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Handle décoratif mobile */
+  .modal__panel::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: var(--color-border);
+    border-radius: var(--radius-md);
+    margin: var(--space-3) auto 0;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    .modal__panel::before {
+      display: none;
+    }
+  }
+</style>

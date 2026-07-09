@@ -1,0 +1,129 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const GUIDE_ROOT = path.join(process.cwd(), 'guides', 'mascotte');
+const PUBLIC_PREFIX = '/guide/mascotte';
+
+type GuideFile = {
+  path: string;
+  label: string;
+  publicPath: string;
+  type: 'svg' | 'md' | 'other';
+};
+
+function walkFiles(dir: string, base = ''): GuideFile[] {
+  const abs = path.join(dir, base);
+  if (!fs.existsSync(abs)) return [];
+
+  const files: GuideFile[] = [];
+
+  for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
+    if (entry.name === 'galerie.html' || entry.name === '.DS_Store') continue;
+
+    const rel = path.posix.join(base, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...walkFiles(dir, rel));
+    } else {
+      const ext = path.extname(entry.name).toLowerCase();
+      const type = ext === '.svg' ? 'svg' : ext === '.md' ? 'md' : 'other';
+      files.push({
+        path: rel,
+        label: rel,
+        publicPath: `${PUBLIC_PREFIX}/${rel}`,
+        type,
+      });
+    }
+  }
+
+  return files.sort((a, b) => a.path.localeCompare(b.path, 'fr'));
+}
+
+const files = walkFiles(GUIDE_ROOT);
+const svgCount = files.filter((f) => f.type === 'svg').length;
+---
+
+<GuideLayout title="Fichiers sources" description="Télécharger les fichiers du guide mascotte">
+  <div class="fichiers">
+    <div class="fichiers__intro guide-prose">
+      <h1>Fichiers sources</h1>
+      <p>
+        Tous les fichiers vivent dans <code>guides/mascotte/</code> dans le repo.
+        {svgCount} SVG disponibles au téléchargement direct.
+      </p>
+    </div>
+
+    <div class="fichiers__list">
+      {files.map((file) => (
+        <div class="fichiers__row">
+          <span class:list={['fichiers__type', `fichiers__type--${file.type}`]}>
+            {file.type.toUpperCase()}
+          </span>
+          <code class="fichiers__path">{file.path}</code>
+          <a href={file.publicPath} download class="fichiers__dl">Télécharger</a>
+        </div>
+      ))}
+    </div>
+  </div>
+</GuideLayout>
+
+<style>
+  .fichiers {
+    max-width: 56rem;
+    margin-inline: auto;
+    padding-bottom: var(--space-16);
+  }
+
+  .fichiers__intro {
+    padding-bottom: 0;
+  }
+
+  .fichiers__list {
+    padding: 0 var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .fichiers__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .fichiers__type {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .fichiers__type--svg { background: #FFD21F; color: #5B2D91; }
+  .fichiers__type--md { background: var(--color-bg-lavender); color: #5B2D91; }
+  .fichiers__type--other { background: var(--color-bg); color: var(--color-text-muted); }
+
+  .fichiers__path {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    word-break: break-all;
+  }
+
+  .fichiers__dl {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: #5B2D91;
+    flex-shrink: 0;
+  }
+
+  .fichiers__dl:hover {
+    text-decoration: underline;
+  }
+</style>

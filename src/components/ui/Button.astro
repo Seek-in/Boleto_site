@@ -1,0 +1,117 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  href?: string;
+  type?: 'button' | 'submit';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  id?: string;
+  'data-modal-open'?: string;
+  'aria-label'?: string;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  size = 'md',
+  class: className,
+  id,
+  'data-modal-open': dataModalOpen,
+  'aria-label': ariaLabel,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class:list={['btn', `btn--${variant}`, `btn--${size}`, className]}
+  href={href}
+  type={!href ? type : undefined}
+  id={id}
+  data-modal-open={dataModalOpen}
+  aria-label={ariaLabel}
+>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast), color var(--transition-fast),
+      border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    text-align: center;
+    white-space: nowrap;
+    border: 2px solid transparent;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  /* Sizes */
+  .btn--sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+  }
+
+  .btn--md {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--font-size-base);
+  }
+
+  .btn--lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--font-size-lg);
+  }
+
+  /* Variants */
+  .btn--primary {
+    background: var(--color-primary);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn--primary:hover {
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn--secondary {
+    background: var(--color-secondary);
+    color: white;
+  }
+
+  .btn--secondary:hover {
+    background: var(--color-secondary-dk);
+  }
+
+  .btn--outline {
+    background: var(--color-bg-white);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .btn--outline:hover {
+    border-color: var(--color-text);
+    background: var(--color-bg-card);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-secondary);
+  }
+
+  .btn--ghost:hover {
+    background: var(--color-bg-lavender);
+  }
+</style>

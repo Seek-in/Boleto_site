@@ -1,0 +1,242 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import GuideLayout from '../../layouts/GuideLayout.astro';
+import { getGuideIconSections, countGuideIcons } from '../../lib/guide-icons';
+
+const sections = getGuideIconSections();
+const total = countGuideIcons(sections);
+const GUIDE_ROOT = path.join(process.cwd(), 'guides', 'mascotte');
+
+function readSvg(relativePath: string): string {
+  return fs.readFileSync(path.join(GUIDE_ROOT, relativePath), 'utf-8');
+}
+---
+
+<GuideLayout title="Galerie d'icônes" description="Galerie des mascottes et icônes Boleto">
+  <div class="galerie">
+    <header class="galerie__header">
+      <h1>Boleto — Galerie d'icônes</h1>
+      <span class="galerie__total">{total} icônes</span>
+      <div class="galerie__bg-switch" role="group" aria-label="Fond d'aperçu">
+        <span>Fond :</span>
+        <button type="button" class="galerie__bg-btn is-on" data-bg="white">Blanc</button>
+        <button type="button" class="galerie__bg-btn" data-bg="violet">Violet</button>
+        <button type="button" class="galerie__bg-btn" data-bg="dark">Sombre</button>
+        <button type="button" class="galerie__bg-btn" data-bg="check">Damier</button>
+      </div>
+    </header>
+
+    <main class="galerie__main">
+      {sections.map((section) => (
+        <section class="galerie__section">
+          <h2>
+            {section.title}
+            <span class="galerie__count">{section.icons.length}</span>
+            {section.note && <em>— {section.note}</em>}
+          </h2>
+
+          <div class:list={['galerie__grid', { 'galerie__grid--row': section.layout === 'row' }]}>
+            {section.icons.map((icon) => (
+              <figure class="galerie__card">
+                <div class="galerie__ico" set:html={readSvg(icon.file)} />
+                <figcaption>{icon.label}</figcaption>
+                <a href={icon.publicPath} download class="galerie__dl" aria-label={`Télécharger ${icon.label}`}>
+                  SVG ↓
+                </a>
+              </figure>
+            ))}
+          </div>
+        </section>
+      ))}
+    </main>
+  </div>
+</GuideLayout>
+
+<script>
+  const btns = document.querySelectorAll<HTMLButtonElement>('.galerie__bg-btn');
+  const root = document.querySelector('.galerie');
+
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btns.forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      root?.classList.remove('bg-violet', 'bg-dark', 'bg-check');
+      const bg = btn.dataset.bg;
+      if (bg && bg !== 'white') root?.classList.add(`bg-${bg}`);
+    });
+  });
+</script>
+
+<style>
+  .galerie__header {
+    background: #5B2D91;
+    color: white;
+    padding: var(--space-5) var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    position: sticky;
+    top: 52px;
+    z-index: 40;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .galerie__header h1 {
+    font-size: var(--font-size-xl);
+    margin: 0;
+  }
+
+  .galerie__total {
+    background: #FFD21F;
+    color: #5B2D91;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+  }
+
+  .galerie__bg-switch {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    flex-wrap: wrap;
+  }
+
+  .galerie__bg-btn {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: transparent;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: var(--font-size-xs);
+  }
+
+  .galerie__bg-btn.is-on {
+    background: #FFD21F;
+    color: #5B2D91;
+    border-color: #FFD21F;
+  }
+
+  .galerie__main {
+    padding: var(--space-6);
+    max-width: 87.5rem;
+    margin-inline: auto;
+  }
+
+  .galerie__section {
+    margin-bottom: var(--space-10);
+  }
+
+  .galerie__section h2 {
+    border-bottom: 3px solid #FFD21F;
+    padding-bottom: var(--space-2);
+    font-size: var(--font-size-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    color: #5B2D91;
+    margin-bottom: var(--space-4);
+  }
+
+  .galerie__section h2 em {
+    font-style: normal;
+    font-size: var(--font-size-sm);
+    color: #8a7a20;
+    font-weight: 500;
+  }
+
+  .galerie__count {
+    background: #FFD21F;
+    color: #5B2D91;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+  }
+
+  .galerie__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .galerie__grid--row {
+    display: flex;
+    gap: var(--space-4);
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+  }
+
+  .galerie__grid--row .galerie__card {
+    min-width: 180px;
+    flex: 0 0 auto;
+  }
+
+  .galerie__card {
+    margin: 0;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    text-align: center;
+    position: relative;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .galerie__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(91, 45, 145, 0.18);
+  }
+
+  .galerie__ico {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
+  }
+
+  .galerie__ico :global(svg) {
+    width: 100%;
+    height: 100%;
+    max-height: 140px;
+  }
+
+  .galerie__card figcaption {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: #5B2D91;
+  }
+
+  .galerie__dl {
+    display: inline-block;
+    margin-top: var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text-muted);
+    padding: 2px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .galerie__dl:hover {
+    color: #5B2D91;
+    border-color: #5B2D91;
+  }
+
+  .galerie.bg-violet .galerie__ico { background: #5B2D91; }
+  .galerie.bg-dark .galerie__ico { background: #1c1c1c; }
+  .galerie.bg-check .galerie__ico {
+    background: conic-gradient(#eee 90deg, #fff 0 180deg, #eee 0 270deg, #fff 0) 0 0 / 20px 20px;
+  }
+</style>

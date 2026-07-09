@@ -1,0 +1,71 @@
+---
+import Icon from '../ui/Icon.astro';
+---
+
+<div class="empty-state">
+  <div class="empty-state__icon">
+    <Icon name="shop" size={40} />
+  </div>
+  <h2 class="empty-state__title">Pas encore de commerces ici</h2>
+  <p class="empty-state__text">
+    Les commerces partenaires arrivent bientôt dans ta région.
+    Télécharge l'app pour être parmi les premiers informés.
+  </p>
+  <a href="/telecharger" class="empty-state__link">
+    Télécharger l'app
+    <Icon name="download" size={18} />
+  </a>
+</div>
+
+<style>
+  .empty-state {
+    text-align: center;
+    padding: var(--space-12) var(--space-6);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    max-width: 28rem;
+    margin-inline: auto;
+  }
+
+  .empty-state__icon {
+    width: 80px;
+    height: 80px;
+    margin-inline: auto;
+    margin-bottom: var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-lg);
+    color: var(--color-secondary);
+  }
+
+  .empty-state__title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .empty-state__text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+  }
+
+  .empty-state__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+    color: var(--color-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .empty-state__link:hover {
+    color: var(--color-secondary-dk);
+  }
+</style>

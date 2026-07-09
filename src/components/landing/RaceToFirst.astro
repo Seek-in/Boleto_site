@@ -1,0 +1,220 @@
+---
+import SectionTitle from '../ui/SectionTitle.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="section race">
+  <div class="container">
+    <div class="race__card">
+      <div class="race__content">
+        <SectionTitle
+          title="La course au premier"
+          subtitle="Un objectif collectif, anonyme, à minuteur. Le 1er du classement à la fin remporte le gros lot — sans tirage au sort."
+        />
+
+        <div class="race__progress-block">
+          <p class="race__label">Il te manque</p>
+          <p class="race__points">600 pts</p>
+          <p class="race__label">pour dépasser le premier</p>
+
+          <div class="race__bar" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" aria-label="Progression vers le premier">
+            <div class="race__bar-track">
+              <div class="race__bar-fill" style="width: 68%"></div>
+              <span class="race__bar-thumb" style="left: 68%"><Icon name="smiley" size={18} /></span>
+              <span class="race__bar-crown"><Icon name="crown" size={16} /></span>
+            </div>
+            <div class="race__bar-legend">
+              <span><span class="race__dot race__dot--yellow"></span> 1250 pts — Toi</span>
+              <span><span class="race__dot race__dot--purple"></span> 1850 pts — Le premier</span>
+            </div>
+          </div>
+
+          <div class="race__countdown">
+            <Icon name="hourglass" size={28} />
+            <div>
+              <p class="race__countdown-label">Fin du compte à rebours dans</p>
+              <p class="race__countdown-time">29j 03:00:41</p>
+              <p class="race__countdown-hint">Sois 1er à la fin et remporte le gros lot du mois</p>
+            </div>
+          </div>
+        </div>
+
+        <Button variant="primary" size="lg" data-modal-open="how-it-works-modal">
+          Comment ça marche ?
+        </Button>
+      </div>
+
+      <div class="race__prize" aria-hidden="true">
+        <div class="race__prize-card">
+          <p class="race__prize-label">LE GROS LOT DU MOIS</p>
+          <div class="race__prize-content">
+            <Icon name="gift" size={36} />
+            <span class="race__prize-text">Grand lot</span>
+          </div>
+          <p class="race__prize-desc">Un cadeau premium, offert à un seul gagnant chaque mois.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .race__card {
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-card);
+    padding: var(--space-8);
+    display: grid;
+    gap: var(--space-8);
+    border: 1px solid rgba(126, 94, 143, 0.2);
+  }
+
+  @media (min-width: 1024px) {
+    .race__card {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      padding: var(--space-10);
+    }
+  }
+
+  .race__progress-block {
+    background: var(--color-bg-white);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    margin-bottom: var(--space-6);
+    text-align: center;
+  }
+
+  .race__label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .race__points {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin: var(--space-2) 0;
+  }
+
+  .race__bar { margin-top: var(--space-6); }
+
+  .race__bar-track {
+    position: relative;
+    height: 8px;
+    background: var(--color-border);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+  }
+
+  .race__bar-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .race__bar-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .race__bar-crown {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-secondary);
+  }
+
+  .race__bar-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .race__dot {
+    display: inline-block;
+    width: 12px;
+    height: 3px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: var(--space-1);
+  }
+
+  .race__dot--yellow { background: var(--color-primary); }
+  .race__dot--purple { background: var(--color-secondary); }
+
+  .race__countdown {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-top: var(--space-5);
+    text-align: left;
+    color: var(--color-secondary);
+  }
+
+  .race__countdown-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .race__countdown-time {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .race__countdown-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-secondary);
+    font-weight: 600;
+    margin-top: var(--space-1);
+  }
+
+  .race__prize-card {
+    background: var(--color-bg-white);
+    border: 2px solid var(--color-secondary);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    text-align: center;
+  }
+
+  .race__prize-label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-secondary);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-4);
+  }
+
+  .race__prize-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    color: var(--color-secondary);
+  }
+
+  .race__prize-text {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .race__prize-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+</style>

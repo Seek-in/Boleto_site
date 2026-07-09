@@ -1,0 +1,418 @@
+---
+const leftLinks = [
+  { href: '/catalogue', label: 'Catalogue' },
+  { href: '/carte', label: 'Maps' },
+];
+
+const rightLinks = [
+  { href: '/contact', label: 'Contact' },
+  { href: '/faq', label: 'FAQ' },
+];
+
+const allLinks = [...leftLinks, ...rightLinks];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/' || currentPath === '';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="navbar">
+  <div class="navbar__bar">
+    <button
+      type="button"
+      class="navbar__burger"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="navbar-menu"
+    >
+      <span class="navbar__burger-line" aria-hidden="true"></span>
+      <span class="navbar__burger-line" aria-hidden="true"></span>
+      <span class="navbar__burger-line" aria-hidden="true"></span>
+    </button>
+
+    <nav class="navbar__nav navbar__nav--left" aria-label="Navigation principale">
+      {leftLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={['navbar__link', { 'navbar__link--active': isActive(href) }]}
+          aria-current={isActive(href) ? 'page' : undefined}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+
+    <nav class="navbar__nav navbar__nav--right" aria-label="Navigation secondaire">
+      {rightLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={['navbar__link', { 'navbar__link--active': isActive(href) }]}
+          aria-current={isActive(href) ? 'page' : undefined}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+
+    <a href="/telecharger" class="navbar__cta navbar__cta--desktop">Télécharger</a>
+
+    <div class="navbar__menu" id="navbar-menu" hidden>
+      <nav class="navbar__menu-nav" aria-label="Menu mobile">
+        {allLinks.map(({ href, label }) => (
+          <a
+            href={href}
+            class:list={['navbar__menu-link', { 'navbar__menu-link--active': isActive(href) }]}
+            aria-current={isActive(href) ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        ))}
+        <a href="/telecharger" class="navbar__menu-cta">Télécharger</a>
+      </nav>
+    </div>
+  </div>
+
+  <a href="/" class="navbar__logo" aria-label="Boleto — Accueil">
+    <span class="navbar__brand">Boleto</span>
+    <span class="navbar__smiley" aria-hidden="true">
+      <svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="38" cy="38" r="38" fill="#FFC93C"/>
+        <circle cx="26.5" cy="31" r="4.8" fill="#2D2235"/>
+        <circle cx="49.5" cy="31" r="4.8" fill="#2D2235"/>
+        <path d="M23 46.5c4.2 5.8 22.8 5.8 27 0" stroke="#2D2235" stroke-width="4.2" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </a>
+</header>
+
+<script>
+  function initNavbarMenu(): void {
+    const burger = document.querySelector<HTMLButtonElement>('.navbar__burger');
+    const menu = document.querySelector<HTMLDivElement>('#navbar-menu');
+    if (!burger || !menu) return;
+
+    const close = (): void => {
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Ouvrir le menu');
+      menu.hidden = true;
+      document.body.classList.remove('navbar-menu-open');
+    };
+
+    const open = (): void => {
+      burger.setAttribute('aria-expanded', 'true');
+      burger.setAttribute('aria-label', 'Fermer le menu');
+      menu.hidden = false;
+      document.body.classList.add('navbar-menu-open');
+    };
+
+    burger.addEventListener('click', () => {
+      if (menu.hidden) open();
+      else close();
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', close);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) close();
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.matchMedia('(min-width: 900px)').matches) close();
+    });
+  }
+
+  initNavbarMenu();
+  document.addEventListener('astro:page-load', initNavbarMenu);
+</script>
+
+<style>
+  .navbar {
+    --smiley-size: 76px;
+    --smiley-half: calc(var(--smiley-size) / 2);
+    --logo-link-gap: 28px;
+
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    width: 100%;
+   
+    padding-bottom: calc(var(--smiley-half) - 4px);
+  }
+
+  .navbar__bar {
+    position: relative;
+    background: var(--color-bg-white);
+    border-bottom: 1px solid var(--color-border);
+    min-height: 64px;
+  }
+
+  .navbar__burger {
+    display: none;
+  }
+
+  .navbar__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--space-6), 3vw, var(--space-10));
+    z-index: 2;
+  }
+
+  .navbar__nav--left {
+    right: calc(50% + var(--smiley-half) + var(--logo-link-gap));
+  }
+
+  .navbar__nav--right {
+    left: calc(50% + var(--smiley-half) + var(--logo-link-gap));
+  }
+
+  .navbar__link {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    padding: var(--space-2) 0;
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    .navbar__link { font-size: var(--font-size-base); }
+  }
+
+  .navbar__link:hover { color: var(--color-text); }
+
+  .navbar__link--active {
+    color: var(--color-text);
+    font-weight: 700;
+    border-bottom-color: var(--color-primary);
+  }
+
+  .navbar__cta {
+    position: absolute;
+    right: clamp(var(--space-5), 4vw, var(--space-12));
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding-inline: var(--space-4);
+    font-weight: 700;
+    font-size: var(--font-size-xs);
+    color: white;
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
+    white-space: nowrap;
+    z-index: 2;
+  }
+
+  @media (min-width: 768px) {
+    .navbar__cta {
+      height: 34px;
+      font-size: var(--font-size-sm);
+      padding-inline: var(--space-5);
+    }
+  }
+
+  .navbar__cta:hover {
+    background: var(--color-secondary-dk);
+  }
+
+  .navbar__logo {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: transform var(--transition-base);
+  }
+
+  .navbar__logo:hover {
+    transform: translateX(-50%) translateY(-3px);
+  }
+
+  .navbar__brand {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .navbar__smiley {
+    display: flex;
+    filter: drop-shadow(0 5px 14px rgba(45, 34, 53, 0.16));
+  }
+
+  .navbar__smiley svg {
+    width: var(--smiley-size);
+    height: var(--smiley-size);
+  }
+
+  .navbar__menu {
+    display: none;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 899px) {
+    .navbar {
+      --smiley-size: 56px;
+      padding-bottom: calc(var(--smiley-half) - 2px);
+    }
+
+    .navbar__bar {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      padding-inline: var(--space-4);
+    }
+
+    .navbar__nav,
+    .navbar__cta--desktop {
+      display: none;
+    }
+
+    .navbar__burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      padding: var(--space-2);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      z-index: 12;
+      flex-shrink: 0;
+    }
+
+    .navbar__burger:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .navbar__burger-line {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--color-text);
+      border-radius: 1px;
+      transition: transform var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    .navbar__burger[aria-expanded="true"] .navbar__burger-line:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .navbar__burger[aria-expanded="true"] .navbar__burger-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .navbar__burger[aria-expanded="true"] .navbar__burger-line:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .navbar__menu {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--color-bg-white);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      z-index: 11;
+      padding: var(--space-4);
+    }
+
+    .navbar__menu[hidden] {
+      display: none;
+    }
+
+    .navbar__menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .navbar__menu-link {
+      display: block;
+      padding: var(--space-3) var(--space-4);
+      font-weight: 600;
+      font-size: var(--font-size-base);
+      color: var(--color-text-muted);
+      border-radius: var(--radius-md);
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .navbar__menu-link:hover {
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    .navbar__menu-link--active {
+      color: var(--color-text);
+      font-weight: 700;
+      background: var(--color-bg-lavender);
+    }
+
+    .navbar__menu-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: var(--space-3);
+      padding: var(--space-3) var(--space-5);
+      font-weight: 700;
+      font-size: var(--font-size-base);
+      color: white;
+      background: var(--color-bg-dark);
+      border-radius: var(--radius-md);
+      transition: background var(--transition-fast);
+    }
+
+    .navbar__menu-cta:hover {
+      background: var(--color-secondary-dk);
+    }
+
+    .navbar__logo {
+      top: 8px;
+    }
+
+    .navbar__brand {
+      font-size: var(--font-size-base);
+    }
+  }
+
+  @media (max-width: 380px) {
+    .navbar {
+      --smiley-size: 48px;
+    }
+
+    .navbar__brand {
+      font-size: var(--font-size-sm);
+    }
+  }
+</style>
+
+<style is:global>
+  body.navbar-menu-open {
+    overflow: hidden;
+  }
+</style>

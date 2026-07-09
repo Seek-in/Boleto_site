@@ -1,0 +1,143 @@
+---
+import DownloadBadges from '../ui/DownloadBadges.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <div class="footer__logo">
+        <span class="footer__smiley" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="38" r="38" fill="#FFC93C"/>
+            <circle cx="26.5" cy="31" r="4.8" fill="#2D2235"/>
+            <circle cx="49.5" cy="31" r="4.8" fill="#2D2235"/>
+            <path d="M23 46.5c4.2 5.8 22.8 5.8 27 0" stroke="#2D2235" stroke-width="4.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="footer__name">Boleto</span>
+      </div>
+      <p class="footer__tagline">
+        La fidélité locale, ludique et récompensée. Chaque achat compte.
+      </p>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__heading">Navigation</h3>
+      <ul>
+        <li><a href="/catalogue">Catalogue</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/faq">FAQ</a></li>
+        <li><a href="/carte">Maps</a></li>
+        <li><a href="/telecharger">Télécharger</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__heading">Légal</h3>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+        <li><a href="#">CGU</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__download">
+      <h3 class="footer__heading">Télécharge l'app</h3>
+      <DownloadBadges />
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>&copy; {year} Boleto. Tous droits réservés.</p>
+      <p class="footer__made">Fait à Genève</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-bg-dark);
+    color: white;
+    margin-top: var(--space-12);
+  }
+
+  .footer__inner {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .footer__inner {
+      grid-template-columns: minmax(0, 1.5fr) auto auto minmax(0, 1fr);
+      gap: var(--space-6) clamp(var(--space-8), 5vw, var(--space-12));
+      align-items: start;
+    }
+  }
+
+  .footer__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .footer__name {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+  }
+
+  .footer__tagline {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: var(--font-size-sm);
+    max-width: 22rem;
+    line-height: 1.6;
+  }
+
+  .footer__heading {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .footer__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .footer__col a {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    transition: color var(--transition-fast);
+  }
+
+  .footer__col a:hover {
+    color: white;
+  }
+
+  .footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-block: var(--space-4);
+  }
+
+  .footer__bottom-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer__made {
+    color: rgba(255, 255, 255, 0.4);
+  }
+</style>

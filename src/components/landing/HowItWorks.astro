@@ -1,0 +1,100 @@
+---
+import SectionTitle from '../ui/SectionTitle.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="section how" id="comment-ca-marche">
+  <div class="container">
+    <SectionTitle
+      title="Comment ça marche ?"
+      subtitle="Trois étapes simples pour cumuler des points et des récompenses à chaque achat chez tes commerces préférés."
+      centered
+    />
+
+    <ol class="how__steps">
+      <li class="how__step">
+        <div class="how__step-icon"><Icon name="shop" size={28} /></div>
+        <div class="how__step-content">
+          <h3 class="how__step-title">1. Visite un commerce partenaire</h3>
+          <p class="how__step-desc">
+            Découvre les commerces Boleto près de chez toi — boulangeries, boutiques, restaurants et plus encore.
+          </p>
+        </div>
+      </li>
+      <li class="how__step">
+        <div class="how__step-icon how__step-icon--yellow"><Icon name="smiley" size={28} /></div>
+        <div class="how__step-content">
+          <h3 class="how__step-title">2. Présente ton QR code</h3>
+          <p class="how__step-desc">
+            Le commerçant scanne ton QR code unique — tu n'as rien à faire ! Pas de carte à sortir, pas d'appli à ouvrir.
+          </p>
+        </div>
+      </li>
+      <li class="how__step">
+        <div class="how__step-icon"><Icon name="sparkles" size={28} /></div>
+        <div class="how__step-content">
+          <h3 class="how__step-title">3. Gagne à chaque achat</h3>
+          <p class="how__step-desc">
+            +10 points Boleto, un tampon sur ta carte de fidélité du commerce, et parfois des offres exclusives en bonus !
+          </p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how { background: var(--color-bg-white); }
+
+  .how__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .how__step {
+    display: flex;
+    gap: var(--space-5);
+    align-items: flex-start;
+    padding: var(--space-5);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    transition: box-shadow var(--transition-base);
+  }
+
+  .how__step:hover { box-shadow: var(--shadow-md); }
+
+  .how__step-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-lg);
+    color: var(--color-secondary);
+  }
+
+  .how__step-icon--yellow {
+    background: var(--color-primary);
+    color: var(--color-text);
+  }
+
+  .how__step-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .how__step-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+</style>

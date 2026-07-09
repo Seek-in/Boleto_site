@@ -1,0 +1,191 @@
+---
+import Badge from '../ui/Badge.astro';
+import Icon from '../ui/Icon.astro';
+import OfferCoupon from './OfferCoupon.astro';
+import type { Commerce } from '../../data/commerces';
+
+interface Props {
+  commerce: Commerce;
+  showAllOffers?: boolean;
+}
+
+const { commerce, showAllOffers = false } = Astro.props;
+const displayedOffers = showAllOffers ? commerce.offers : commerce.offers.slice(0, 3);
+---
+
+<article
+  class="commerce-card"
+  data-commerce-id={commerce.id}
+  data-category={commerce.category}
+>
+  <div class="commerce-card__hero">
+    <div class="commerce-card__image" role="img" aria-label={`Photo de ${commerce.name}`}>
+      <Icon name="shop" size={48} />
+    </div>
+    <div class="commerce-card__overlay">
+      <div class="commerce-card__top">
+        <span class="commerce-card__offers-count">{commerce.offers.length} offres</span>
+      </div>
+      <div class="commerce-card__info">
+        <h3 class="commerce-card__name">{commerce.name}</h3>
+        <div class="commerce-card__meta">
+          <Badge variant={commerce.status === 'ouvert' ? 'status-open' : 'status-closed'}>
+            {commerce.status === 'ouvert' ? 'Ouvert' : 'Fermé'}
+          </Badge>
+          <span class="commerce-card__distance">{commerce.distance}</span>
+        </div>
+        <p class="commerce-card__address">{commerce.address}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="commerce-card__ticket">
+    <div class="commerce-card__notch commerce-card__notch--left" aria-hidden="true"></div>
+    <div class="commerce-card__notch commerce-card__notch--right" aria-hidden="true"></div>
+    <div class="commerce-card__coupons">
+      {displayedOffers.map((offer) => (
+        <OfferCoupon offer={offer} compact />
+      ))}
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="commerce-card__btn"
+    data-commerce-open={commerce.id}
+    aria-label={`Voir les détails de ${commerce.name}`}
+  >
+    Voir le commerce
+  </button>
+</article>
+
+<style>
+  .commerce-card {
+    background: var(--color-bg-white);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .commerce-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .commerce-card__hero {
+    position: relative;
+    height: 180px;
+  }
+
+  .commerce-card__image {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-bg-lavender) 0%, var(--color-bg-card) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-secondary);
+  }
+
+  .commerce-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(45, 34, 53, 0.85) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-3);
+  }
+
+  .commerce-card__top {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .commerce-card__offers-count {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-text);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+  }
+
+  .commerce-card__info {
+    color: white;
+  }
+
+  .commerce-card__name {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-1);
+  }
+
+  .commerce-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+
+  .commerce-card__distance {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    opacity: 0.9;
+  }
+
+  .commerce-card__address {
+    font-size: var(--font-size-xs);
+    opacity: 0.75;
+    line-height: 1.4;
+  }
+
+  .commerce-card__ticket {
+    position: relative;
+    background: var(--color-bg-card);
+    padding: var(--space-4) var(--space-3);
+    border-top: 2px dashed var(--color-border);
+  }
+
+  .commerce-card__notch {
+    position: absolute;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    background: var(--color-bg);
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .commerce-card__notch--left { left: -10px; }
+  .commerce-card__notch--right { right: -10px; }
+
+  .commerce-card__coupons {
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .commerce-card__coupons::-webkit-scrollbar { display: none; }
+
+  .commerce-card__btn {
+    margin: var(--space-3) var(--space-4) var(--space-4);
+    padding: var(--space-3);
+    background: var(--color-secondary);
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
+  }
+
+  .commerce-card__btn:hover {
+    background: var(--color-secondary-dk);
+  }
+</style>

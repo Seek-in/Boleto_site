@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+
+const faqs = [
+  {
+    question: 'C\'est quoi Boleto ?',
+    answer:
+      'Boleto est une application de fidélité pour commerces locaux. À chaque achat chez un partenaire, le commerçant scanne ton QR code unique : tu gagnes des points, des tampons sur ta carte de fidélité, et parfois des offres exclusives.',
+  },
+  {
+    question: 'Comment cumuler des points ?',
+    answer:
+      'Présente ton QR code Boleto en caisse. Le commerçant le scanne — tu n\'as rien d\'autre à faire. Tu reçois +10 points Boleto à chaque achat, plus un tampon sur la carte de fidélité du commerce.',
+  },
+  {
+    question: 'À quoi servent les tampons ?',
+    answer:
+      'Chaque commerce partenaire propose sa propre carte de fidélité. En accumulant des tampons (par exemple 10 achats), tu débloques une récompense : réduction, produit offert, etc. Les cartes sont indépendantes les unes des autres.',
+  },
+  {
+    question: 'C\'est quoi la course au premier ?',
+    answer:
+      'Un classement commun à toute l\'app, avec un compte à rebours. Le joueur en tête à la fin du timer remporte le gros lot du mois (par exemple un iPhone). Pas de tirage au sort : le premier gagne.',
+  },
+  {
+    question: 'Les défis, comment ça marche ?',
+    answer:
+      'Des missions temporaires te permettent de gagner des points bonus : visiter de nouveaux commerces, compléter des cartes, revenir plusieurs jours d\'affilée… Consulte l\'onglet Défis dans l\'app pour voir ceux en cours.',
+  },
+  {
+    question: 'L\'app est gratuite ?',
+    answer:
+      'Oui, Boleto est entièrement gratuite pour les clients. Tu télécharges l\'app, tu crées ton compte, et tu commences à cumuler dès ton premier scan.',
+  },
+  {
+    question: 'Où trouver les commerces partenaires ?',
+    answer:
+      'Dans l\'app, onglet Commerces ou Carte. Sur ce site, consulte notre catalogue pour découvrir les partenaires et leurs offres avant même de télécharger l\'app.',
+  },
+  {
+    question: 'Je suis commerçant, comment devenir partenaire ?',
+    answer:
+      'Écris-nous à partenaires@boleto.me ou via le formulaire de contact. On t\'explique comment intégrer Boleto dans ton commerce et fidéliser tes clients.',
+  },
+];
+---
+
+<Layout
+  title="FAQ"
+  description="Toutes les réponses sur Boleto : points, tampons, défis, course au premier et commerces partenaires."
+>
+  <section class="section faq">
+    <div class="container faq__container">
+      <SectionTitle
+        title="Questions fréquentes"
+        subtitle="Tout ce que tu dois savoir sur Boleto, la fidélité locale et les récompenses."
+        centered
+      />
+
+      <div class="faq__list">
+        {faqs.map((item, i) => (
+          <details class="faq__item" open={i === 0}>
+            <summary class="faq__question">
+              <span>{item.question}</span>
+              <span class="faq__chevron" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>{item.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="faq__more">
+        <p>Tu n'as pas trouvé ta réponse ?</p>
+        <a href="/contact" class="faq__contact-link">Contacte-nous →</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .faq__container {
+    max-width: 40rem;
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .faq__item {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .faq__item[open] {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__chevron {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform var(--transition-fast);
+  }
+
+  .faq__item[open] .faq__chevron {
+    transform: rotate(180deg);
+    color: var(--color-secondary);
+  }
+
+  .faq__answer {
+    padding: 0 var(--space-6) var(--space-5);
+  }
+
+  .faq__answer p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+  }
+
+  .faq__more {
+    margin-top: var(--space-10);
+    text-align: center;
+    padding: var(--space-6);
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(126, 94, 143, 0.15);
+  }
+
+  .faq__more p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .faq__contact-link {
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    color: var(--color-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .faq__contact-link:hover {
+    color: var(--color-secondary-dk);
+  }
+</style>

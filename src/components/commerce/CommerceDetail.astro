@@ -1,0 +1,153 @@
+---
+import Badge from '../ui/Badge.astro';
+import Icon from '../ui/Icon.astro';
+import OfferCoupon from './OfferCoupon.astro';
+import Button from '../ui/Button.astro';
+import type { Commerce } from '../../data/commerces';
+
+interface Props {
+  commerce: Commerce;
+}
+
+const { commerce } = Astro.props;
+---
+
+<div class="commerce-detail" data-commerce-detail={commerce.id} hidden>
+  <div class="commerce-detail__hero">
+    <Icon name="shop" size={56} />
+  </div>
+
+  <div class="commerce-detail__body">
+    <Badge variant="category">{commerce.category}</Badge>
+    <h2 class="commerce-detail__name">{commerce.name}</h2>
+
+    <div class="commerce-detail__meta">
+      <Badge variant={commerce.status === 'ouvert' ? 'status-open' : 'status-closed'}>
+        {commerce.status === 'ouvert' ? 'Ouvert' : 'Fermé'}
+      </Badge>
+      <span>{commerce.distance}</span>
+    </div>
+    <p class="commerce-detail__address">{commerce.address}</p>
+
+    <div class="commerce-detail__features">
+      <div class="commerce-detail__feature">
+        <Icon name="sparkles" size={18} />
+        <span>+10 points par achat</span>
+      </div>
+      <div class="commerce-detail__feature">
+        <Icon name="tag" size={18} />
+        <span>Offres exclusives</span>
+      </div>
+      <div class="commerce-detail__feature">
+        <Icon name="smiley" size={18} />
+        <span>Fidélité récompensée</span>
+      </div>
+      <div class="commerce-detail__feature">
+        <Icon name="users" size={18} />
+        <span>Commerce partenaire</span>
+      </div>
+    </div>
+
+    <div class="commerce-detail__about">
+      <h3>À propos</h3>
+      <p>{commerce.description}</p>
+    </div>
+
+    <div class="commerce-detail__actions">
+      <Button variant="primary" href="#">Voir le menu</Button>
+      <Button variant="outline" href="#">Itinéraire</Button>
+    </div>
+
+    <div class="commerce-detail__offers">
+      <h3>Offres disponibles</h3>
+      <div class="commerce-detail__offers-grid">
+        {commerce.offers.map((offer) => (
+          <OfferCoupon offer={offer} />
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .commerce-detail__hero {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-bg-lavender) 0%, var(--color-bg-card) 100%);
+    color: var(--color-secondary);
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+  }
+
+  .commerce-detail__body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .commerce-detail__name {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .commerce-detail__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .commerce-detail__address {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .commerce-detail__features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .commerce-detail__feature {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .commerce-detail__about h3,
+  .commerce-detail__offers h3 {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+
+  .commerce-detail__about p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .commerce-detail__actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .commerce-detail__offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--space-3);
+  }
+</style>

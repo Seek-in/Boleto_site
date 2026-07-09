@@ -1,0 +1,58 @@
+---
+interface Props {
+  variant?: 'points' | 'status-open' | 'status-closed' | 'offer' | 'timer' | 'category';
+  class?: string;
+}
+
+const { variant = 'points', class: className } = Astro.props;
+---
+
+<span class:list={['badge', `badge--${variant}`, className]}>
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .badge--points {
+    background: var(--color-bg-lavender);
+    color: var(--color-secondary-dk);
+  }
+
+  .badge--status-open {
+    background: rgba(61, 189, 125, 0.15);
+    color: var(--color-green);
+  }
+
+  .badge--status-closed {
+    background: rgba(233, 75, 75, 0.12);
+    color: var(--color-red);
+  }
+
+  .badge--offer {
+    background: rgba(255, 138, 61, 0.15);
+    color: var(--color-orange);
+  }
+
+  .badge--timer {
+    background: var(--color-bg-lavender);
+    color: var(--color-secondary);
+  }
+
+  .badge--category {
+    background: var(--color-bg-lavender);
+    color: var(--color-secondary);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>

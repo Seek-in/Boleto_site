@@ -1,0 +1,141 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout title="Accueil" description="Guide interne — icônes mascotte Boleto">
+  <div class="guide-home">
+    <div class="guide-home__hero">
+      <p class="guide-home__badge">Usage local · non déployé en prod</p>
+      <h1>Guide mascotte Boleto</h1>
+      <p class="guide-home__lead">
+        Espace de travail pour créer et consulter les icônes custom.
+        Clone le repo, lance <code>npm run dev</code>, ouvre <code>/guide</code>.
+      </p>
+    </div>
+
+    <div class="guide-home__grid">
+      <a href="/guide/icones" class="guide-card">
+        <h2>Galerie d'icônes</h2>
+        <p>Toutes les icônes SVG par catégorie, avec aperçu et téléchargement.</p>
+      </a>
+      <a href="/guide/prompts" class="guide-card">
+        <h2>Kit de prompts</h2>
+        <p>ADN Boleto, règles de transformation, prompts A et B.</p>
+      </a>
+      <a href="/guide/backlog" class="guide-card">
+        <h2>Backlog</h2>
+        <p>Liste des icônes à créer par catégorie de commerce.</p>
+      </a>
+      <a href="/guide/fichiers" class="guide-card">
+        <h2>Fichiers sources</h2>
+        <p>Télécharger les SVG, prompts et docs depuis <code>guides/mascotte/</code>.</p>
+      </a>
+    </div>
+
+    <section class="guide-home__workflow">
+      <h2>Workflow collaboratif</h2>
+      <ol>
+        <li>Ajouter un <code>.svg</code> dans <code>guides/mascotte/02_icones/&lt;catégorie&gt;/</code></li>
+        <li><code>git add</code> → <code>commit</code> → <code>push</code> (ou Pull Request)</li>
+        <li><code>npm run dev</code> → vérifier sur <code>/guide/icones</code></li>
+        <li>Le site public <code>boleto.me</code> n'inclut pas ce guide (deploy exclut <code>/guide/</code>)</li>
+      </ol>
+    </section>
+  </div>
+</GuideLayout>
+
+<style>
+  .guide-home {
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: var(--space-10) var(--space-6) var(--space-16);
+  }
+
+  .guide-home__badge {
+    display: inline-block;
+    background: #FFD21F;
+    color: #5B2D91;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-4);
+  }
+
+  .guide-home h1 {
+    font-size: var(--font-size-3xl);
+    color: #5B2D91;
+    margin-bottom: var(--space-4);
+  }
+
+  .guide-home__lead {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-10);
+  }
+
+  .guide-home__grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+  }
+
+  @media (min-width: 640px) {
+    .guide-home__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .guide-card {
+    display: block;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .guide-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .guide-card h2 {
+    font-size: var(--font-size-lg);
+    color: #5B2D91;
+    margin-bottom: var(--space-2);
+  }
+
+  .guide-card p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .guide-home__workflow {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+  }
+
+  .guide-home__workflow h2 {
+    font-size: var(--font-size-xl);
+    color: #5B2D91;
+    margin-bottom: var(--space-4);
+  }
+
+  .guide-home__workflow ol {
+    padding-left: var(--space-6);
+    color: var(--color-text-muted);
+    line-height: 1.8;
+  }
+
+  .guide-home__workflow code {
+    background: var(--color-bg-lavender);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+</style>

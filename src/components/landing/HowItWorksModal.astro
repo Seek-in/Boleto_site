@@ -1,0 +1,224 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<div class="hiw-modal">
+  <p class="hiw-modal__intro">
+    Cumule des points dans les commerces partenaires.
+    <strong>Le 1er à la fin du compte à rebours remporte le gros lot !</strong>
+  </p>
+
+  <div class="hiw-modal__cards">
+    <div class="hiw-modal__card hiw-modal__card--purple">
+      <p class="hiw-modal__card-label">LE GROS LOT DU MOIS</p>
+      <div class="hiw-modal__card-row">
+        <Icon name="gift" size={32} />
+        <strong>Grand lot</strong>
+      </div>
+      <p class="hiw-modal__card-desc">Un cadeau premium, offert à un seul gagnant chaque mois.</p>
+    </div>
+
+    <div class="hiw-modal__card hiw-modal__card--yellow">
+      <p class="hiw-modal__card-label">LA SEULE RÈGLE</p>
+      <strong class="hiw-modal__card-rule">Sois le 1er à la fin du compte à rebours</strong>
+      <p class="hiw-modal__card-desc">
+        Celui qui est <strong>en tête du classement</strong> au moment où le
+        <strong>compte à rebours atteint zéro</strong> remporte le lot. Pas de tirage au sort : le premier gagne tout.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="hiw-modal__section-title">1. Achète dans les commerces partenaires</h3>
+  <ul class="hiw-modal__list">
+    <li class="hiw-modal__item">
+      <span class="hiw-modal__item-icon"><Icon name="shop" size={22} /></span>
+      <div>
+        <strong>Rends-toi dans un commerce partenaire</strong>
+        <p>Visite l'un des commerces partenaires Boleto.</p>
+      </div>
+    </li>
+    <li class="hiw-modal__item">
+      <span class="hiw-modal__item-icon hiw-modal__item-icon--yellow"><Icon name="smiley" size={22} /></span>
+      <div>
+        <strong>Présente ton QR code</strong>
+        <p>Le commerçant scanne ton QR code — tu n'as rien à faire !</p>
+      </div>
+    </li>
+    <li class="hiw-modal__item">
+      <span class="hiw-modal__item-icon"><Icon name="sparkles" size={22} /></span>
+      <div>
+        <strong>Gagne +10 points à chaque achat</strong>
+        <p>Et un tampon sur ta carte de fidélité du commerce.</p>
+      </div>
+    </li>
+    <li class="hiw-modal__item">
+      <span class="hiw-modal__item-icon"><Icon name="chart" size={22} /></span>
+      <div>
+        <strong>Plus tu achètes, plus tu t'approches de la victoire</strong>
+        <p>Suis la progression du premier en temps réel.</p>
+      </div>
+    </li>
+  </ul>
+
+  <h3 class="hiw-modal__section-title">2. Suis la progression du premier en temps réel</h3>
+  <div class="hiw-modal__points-card">
+    <p>Il te manque</p>
+    <p class="hiw-modal__points">600 pts</p>
+    <p>pour dépasser le premier</p>
+  </div>
+
+  <div class="hiw-modal__footer">
+    <Button variant="primary" size="lg" href="/telecharger">Télécharger l'app</Button>
+  </div>
+</div>
+
+<style>
+  .hiw-modal {
+    padding: var(--space-5) var(--space-6) var(--space-8);
+  }
+
+  .hiw-modal__intro {
+    text-align: center;
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+  }
+
+  .hiw-modal__intro strong {
+    color: var(--color-secondary);
+    display: block;
+    margin-top: var(--space-2);
+  }
+
+  .hiw-modal__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .hiw-modal__card {
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+    border: 2px solid;
+  }
+
+  .hiw-modal__card--purple {
+    border-color: var(--color-secondary);
+    background: var(--color-bg-lavender);
+  }
+
+  .hiw-modal__card--yellow {
+    border-color: var(--color-primary);
+    background: var(--color-bg-card);
+  }
+
+  .hiw-modal__card-label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-secondary);
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-3);
+  }
+
+  .hiw-modal__card-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    color: var(--color-secondary);
+  }
+
+  .hiw-modal__card-rule {
+    display: block;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .hiw-modal__card-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .hiw-modal__section-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+  }
+
+  .hiw-modal__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+
+  .hiw-modal__item {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .hiw-modal__item-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-md);
+    color: var(--color-secondary);
+  }
+
+  .hiw-modal__item-icon--yellow {
+    background: var(--color-primary);
+    color: var(--color-text);
+  }
+
+  .hiw-modal__item strong {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .hiw-modal__item p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .hiw-modal__points-card {
+    text-align: center;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .hiw-modal__points {
+    font-size: var(--font-size-4xl);
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin: var(--space-2) 0;
+  }
+
+  .hiw-modal__footer {
+    text-align: center;
+  }
+</style>

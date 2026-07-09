@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+import Chip from '../components/ui/Chip.astro';
+import CommerceCard from '../components/commerce/CommerceCard.astro';
+import CommerceDetail from '../components/commerce/CommerceDetail.astro';
+import EmptyState from '../components/commerce/EmptyState.astro';
+import CatalogueSkeleton from '../components/commerce/CatalogueSkeleton.astro';
+import Modal from '../components/modal/Modal.astro';
+import { commerces, categories } from '../data/commerces';
+
+const hasCommerces = commerces.length > 0;
+---
+
+<Layout
+  title="Catalogue"
+  description="Découvre les commerces partenaires Boleto et cumule des points à chaque achat."
+>
+  <section class="catalogue-hero">
+    <div class="container">
+      <SectionTitle
+        title="Catalogue des commerces"
+        subtitle="Découvre les commerces partenaires et cumule des points !"
+        centered
+      />
+
+      <div class="catalogue-search" role="search">
+        <label for="search" class="sr-only">Rechercher un commerce ou une offre</label>
+        <div class="catalogue-search__bar">
+          <svg class="catalogue-search__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M14 14l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="search"
+            id="search"
+            class="catalogue-search__input"
+            placeholder="Rechercher un commerce, une offre..."
+            disabled={!hasCommerces}
+            aria-describedby="search-hint"
+          />
+        </div>
+        {!hasCommerces && (
+          <p id="search-hint" class="catalogue-search__hint">Recherche disponible quand les commerces seront en ligne</p>
+        )}
+      </div>
+
+      {hasCommerces && (
+        <div class="chips-row" role="group" aria-label="Filtrer par catégorie">
+          <Chip label="Toutes" value="Toutes" active />
+          {categories.map((cat) => (
+            <Chip label={cat} value={cat} />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section catalogue-grid-section">
+    <div class="container catalogue-grid-section__wrap">
+      {!hasCommerces && (
+        <>
+          <CatalogueSkeleton />
+          <div class="catalogue-empty-overlay">
+            <EmptyState />
+          </div>
+        </>
+      )}
+
+      {hasCommerces && (
+        <div class="commerce-grid">
+          {commerces.map((commerce) => (
+            <CommerceCard commerce={commerce} />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  {hasCommerces && (
+    <Modal id="commerce-modal" size="full">
+      {commerces.map((commerce) => (
+        <CommerceDetail commerce={commerce} />
+      ))}
+    </Modal>
+  )}
+</Layout>
+
+{hasCommerces && (
+  <script>
+    import '../scripts/modal.ts';
+  </script>
+)}
+
+<style>
+  .catalogue-hero {
+    padding-block: var(--space-10) var(--space-4);
+    background: var(--color-bg);
+  }
+
+  .catalogue-search {
+    max-width: 36rem;
+    margin-inline: auto;
+    margin-bottom: var(--space-6);
+  }
+
+  .catalogue-search__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .catalogue-search__icon {
+    color: var(--color-text-light);
+    flex-shrink: 0;
+  }
+
+  .catalogue-search__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .catalogue-search__hint {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+    margin-top: var(--space-2);
+  }
+
+  .catalogue-grid-section {
+    padding-top: 0;
+  }
+
+  .catalogue-grid-section__wrap {
+    position: relative;
+  }
+
+  .catalogue-empty-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    z-index: 2;
+    width: 100%;
+    max-width: 28rem;
+    padding-inline: var(--space-4);
+  }
+</style>

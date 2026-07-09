@@ -1,0 +1,218 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+---
+
+<Layout
+  title="Contact"
+  description="Contacte l'équipe Boleto pour toute question sur l'app de fidélité locale."
+>
+  <section class="section contact">
+    <div class="container contact__inner">
+      <SectionTitle
+        title="Contacte-nous"
+        subtitle="Une question sur Boleto, une demande de partenariat ou un retour sur l'app ? On te répond rapidement."
+      />
+
+      <div class="contact__cards">
+        <div class="contact__card">
+          <span class="contact__card-icon"><Icon name="mail" size={24} /></span>
+          <div>
+            <h3>Email</h3>
+            <a href="mailto:hello@boleto.me">hello@boleto.me</a>
+          </div>
+        </div>
+        <div class="contact__card">
+          <span class="contact__card-icon"><Icon name="map-pin" size={24} /></span>
+          <div>
+            <h3>Adresse</h3>
+            <p>Genève, Suisse</p>
+          </div>
+        </div>
+        <div class="contact__card">
+          <span class="contact__card-icon"><Icon name="message" size={24} /></span>
+          <div>
+            <h3>Réseaux</h3>
+            <p>
+              <a href="#">Instagram</a> · <a href="#">LinkedIn</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact__partner">
+        <h3>Commerçant ?</h3>
+        <p>
+          Rejoins le réseau Boleto et fidélise tes clients avec un système ludique et moderne.
+        </p>
+        <Button variant="secondary" href="mailto:partenaires@boleto.me">
+          Devenir partenaire
+        </Button>
+      </div>
+
+      <form
+        class="contact__form"
+        action="mailto:hello@boleto.me"
+        method="POST"
+        enctype="text/plain"
+      >
+        <h2 class="contact__form-title">Envoie-nous un message</h2>
+
+        <div class="contact__field">
+          <label for="name">Nom</label>
+          <input type="text" id="name" name="Nom" placeholder="Ton nom" required />
+        </div>
+
+        <div class="contact__field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="Email" placeholder="ton@email.com" required />
+        </div>
+
+        <div class="contact__field">
+          <label for="message">Message</label>
+          <textarea id="message" name="Message" rows="5" placeholder="Ton message..." required></textarea>
+        </div>
+
+        <Button type="submit" variant="primary" size="lg">
+          Envoyer le message
+        </Button>
+
+        <p class="contact__form-note">
+          Ce formulaire ouvre ton client mail. Pour une expérience complète, utilise l'app Boleto.
+        </p>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact__inner {
+    max-width: 40rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  .contact__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contact__card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .contact__card-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-md);
+    color: var(--color-secondary);
+  }
+
+  .contact__card h3 {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .contact__card a,
+  .contact__card p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .contact__card a:hover {
+    color: var(--color-secondary);
+  }
+
+  .contact__partner {
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-card);
+    padding: var(--space-6);
+    border: 1px solid rgba(126, 94, 143, 0.2);
+  }
+
+  .contact__partner h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    color: var(--color-text);
+  }
+
+  .contact__partner p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+    line-height: 1.7;
+  }
+
+  .contact__form {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-md);
+  }
+
+  .contact__form-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-6);
+  }
+
+  .contact__field {
+    margin-bottom: var(--space-5);
+  }
+
+  .contact__field label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .contact__field input,
+  .contact__field textarea {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    background: var(--color-bg);
+    transition: border-color var(--transition-fast);
+    resize: vertical;
+  }
+
+  .contact__field input:focus,
+  .contact__field textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .contact__form-note {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+    margin-top: var(--space-4);
+    text-align: center;
+  }
+</style>

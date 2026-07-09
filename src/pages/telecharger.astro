@@ -1,0 +1,86 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+import DownloadBadges from '../components/ui/DownloadBadges.astro';
+import Icon from '../components/ui/Icon.astro';
+---
+
+<Layout
+  title="Télécharger"
+  description="Télécharge l'application Boleto sur iOS ou Android. Fidélité locale, ludique et récompensée."
+>
+  <section class="section download-page">
+    <div class="container download-page__inner">
+      <div class="download-page__icon" aria-hidden="true">
+        <Icon name="smiley" size={72} />
+      </div>
+
+      <SectionTitle
+        title="Télécharge Boleto"
+        subtitle="L'app n'est pas encore disponible sur les stores — les liens seront activés dès la publication. En attendant, inscris-toi pour être notifié au lancement."
+        centered
+      />
+
+      <DownloadBadges storeLinks />
+
+      <div class="download-page__features">
+        <div class="download-page__feature">
+          <Icon name="qr" size={22} />
+          <span>QR code unique</span>
+        </div>
+        <div class="download-page__feature">
+          <Icon name="star" size={22} />
+          <span>Points à chaque achat</span>
+        </div>
+        <div class="download-page__feature">
+          <Icon name="ticket" size={22} />
+          <span>Cartes de fidélité</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .download-page__inner {
+    max-width: 32rem;
+    margin-inline: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .download-page__icon {
+    margin-bottom: var(--space-2);
+  }
+
+  .download-page__inner :global(.download-badges) {
+    justify-content: center;
+  }
+
+  .download-page__features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    width: 100%;
+  }
+
+  .download-page__feature {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+</style>

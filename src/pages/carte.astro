@@ -1,0 +1,166 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+import Icon from '../components/ui/Icon.astro';
+---
+
+<Layout
+  title="Carte"
+  description="Trouve les commerces partenaires Boleto autour de toi sur la carte interactive."
+>
+  <section class="section carte-page">
+    <div class="container carte-page__inner">
+      <SectionTitle
+        title="Carte des commerces"
+        subtitle="Localise les partenaires Boleto près de chez toi et découvre leurs offres."
+        centered
+      />
+
+      <div class="carte-page__placeholder" aria-hidden="true">
+        <div class="carte-page__grid">
+          {Array.from({ length: 12 }).map(() => (
+            <div class="carte-page__pin">
+              <div class="carte-page__pin-dot"></div>
+              <div class="carte-page__pin-label"></div>
+            </div>
+          ))}
+        </div>
+        <div class="carte-page__fade"></div>
+      </div>
+
+      <div class="carte-page__message">
+        <div class="carte-page__message-icon">
+          <Icon name="map-pin" size={32} />
+        </div>
+        <h2>Carte bientôt disponible</h2>
+        <p>
+          La carte interactive arrive prochainement. Tu pourras y retrouver tous les commerces
+          partenaires autour de toi, comme dans l'app.
+        </p>
+        <a href="/catalogue" class="carte-page__link">Voir le catalogue</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .carte-page__inner {
+    max-width: 40rem;
+    margin-inline: auto;
+    text-align: center;
+    position: relative;
+  }
+
+  .carte-page__placeholder {
+    position: relative;
+    height: 280px;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    margin-bottom: var(--space-8);
+  }
+
+  .carte-page__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.35;
+  }
+
+  .carte-page__pin {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.25;
+    filter: blur(1px);
+  }
+
+  .carte-page__pin:nth-child(1)  { top: 15%; left: 20%; }
+  .carte-page__pin:nth-child(2)  { top: 25%; left: 55%; }
+  .carte-page__pin:nth-child(3)  { top: 10%; left: 75%; }
+  .carte-page__pin:nth-child(4)  { top: 40%; left: 30%; }
+  .carte-page__pin:nth-child(5)  { top: 50%; left: 65%; }
+  .carte-page__pin:nth-child(6)  { top: 35%; left: 85%; }
+  .carte-page__pin:nth-child(7)  { top: 60%; left: 15%; }
+  .carte-page__pin:nth-child(8)  { top: 70%; left: 45%; }
+  .carte-page__pin:nth-child(9)  { top: 55%; left: 80%; }
+  .carte-page__pin:nth-child(10) { top: 75%; left: 25%; }
+  .carte-page__pin:nth-child(11) { top: 80%; left: 60%; }
+  .carte-page__pin:nth-child(12) { top: 65%; left: 90%; }
+
+  .carte-page__pin-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-bg-lavender);
+    border: 2px solid var(--color-border);
+  }
+
+  .carte-page__pin-label {
+    width: 48px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--color-border);
+  }
+
+  .carte-page__fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.7) 70%,
+      var(--color-bg) 100%
+    );
+    pointer-events: none;
+  }
+
+  .carte-page__message {
+    padding: var(--space-6);
+  }
+
+  .carte-page__message-icon {
+    width: 72px;
+    height: 72px;
+    margin-inline: auto;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-lavender);
+    border-radius: var(--radius-lg);
+    color: var(--color-secondary);
+  }
+
+  .carte-page__message h2 {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .carte-page__message p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-5);
+  }
+
+  .carte-page__link {
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    color: var(--color-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .carte-page__link:hover {
+    color: var(--color-secondary-dk);
+  }
+</style>

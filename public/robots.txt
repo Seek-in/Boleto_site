@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://boleto.me/sitemap-index.xml

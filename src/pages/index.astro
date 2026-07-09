@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/landing/Hero.astro';
+import HowItWorks from '../components/landing/HowItWorks.astro';
+import Benefits from '../components/landing/Benefits.astro';
+import RaceToFirst from '../components/landing/RaceToFirst.astro';
+import CtaBanner from '../components/landing/CtaBanner.astro';
+import Modal from '../components/modal/Modal.astro';
+import HowItWorksModal from '../components/landing/HowItWorksModal.astro';
+---
+
+<Layout title="Accueil">
+  <Hero />
+  <HowItWorks />
+  <Benefits />
+  <RaceToFirst />
+  <CtaBanner />
+
+  <Modal id="how-it-works-modal" title="Comment ça marche ?" size="lg">
+    <HowItWorksModal />
+  </Modal>
+</Layout>
+
+<script>
+  import '../scripts/modal.ts';
+</script>

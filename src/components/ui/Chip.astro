@@ -1,0 +1,51 @@
+---
+interface Props {
+  label: string;
+  active?: boolean;
+  value?: string;
+  class?: string;
+}
+
+const { label, active = false, value, class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['chip', { 'chip--active': active }, className]}
+  data-filter={value ?? label}
+  aria-pressed={active}
+>
+  {label}
+</button>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-bg-white);
+    border: 2px solid var(--color-border);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast),
+      background var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-text);
+  }
+
+  .chip--active,
+  :global(.chip--active) {
+    border-color: var(--color-primary);
+    color: var(--color-text);
+    background: var(--color-bg-white);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+</style>
