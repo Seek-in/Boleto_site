@@ -8,7 +8,7 @@ Site **statique** Astro 7 pour l'app de fidélité locale **Boleto**. Pas de bac
 
 | | |
 |---|---|
-| **Repo local** | `~/Projects/boleto-site` |
+| **Repo local** | `~/Boleto_Site` |
 | **Domaine** | https://boleto.me |
 | **Serveur** | Hetzner Ubuntu, Caddy (HTTPS) |
 | **Dossier serveur** | `/var/www/boleto/` |
