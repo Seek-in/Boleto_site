@@ -49,23 +49,62 @@ function listSvgsInDir(relativeDir: string, category: string): GuideIcon[] {
     .map((f) => iconFromFile(path.posix.join(relativeDir, f), category));
 }
 
-export function getGuideIconSections(): GuideIconSection[] {
-  const baseFiles = [
-    '01_base/boleto_base_OFFICIEL.svg',
-    '02_icones/boissons/boissons_gobelet_base.svg',
-    '02_icones/epicerie/epicerie_panier_base.svg',
-    '02_icones/mode/mode_tshirt_base.svg',
-  ];
+function isBaseIcon(relativePath: string): boolean {
+  return relativePath.startsWith('01_base/') || path.basename(relativePath).includes('_base');
+}
 
-  const sections: GuideIconSection[] = [
-    {
-      id: 'base',
-      title: 'Personnages de base',
-      note: 'même forme, même pose',
-      layout: 'row',
-      icons: baseFiles.map((f) => iconFromFile(f, 'base')),
-    },
-  ];
+function compareIconPaths(a: string, b: string): number {
+  const aIn01 = a.startsWith('01_base/');
+  const bIn01 = b.startsWith('01_base/');
+  if (aIn01 !== bIn01) return aIn01 ? -1 : 1;
+  return a.localeCompare(b, 'fr');
+}
+
+function sortIconsBaseFirst(icons: GuideIcon[]): GuideIcon[] {
+  return [...icons].sort((a, b) => {
+    const aBase = isBaseIcon(a.file);
+    const bBase = isBaseIcon(b.file);
+    if (aBase !== bBase) return aBase ? -1 : 1;
+    return a.file.localeCompare(b.file, 'fr');
+  });
+}
+
+function collectBaseIcons(): GuideIcon[] {
+  const bases: GuideIcon[] = [...listSvgsInDir('01_base', 'base')];
+
+  const iconesDir = path.join(GUIDE_ROOT, '02_icones');
+  if (fs.existsSync(iconesDir)) {
+    const categories = fs
+      .readdirSync(iconesDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name)
+      .sort((a, b) => a.localeCompare(b, 'fr'));
+
+    for (const cat of categories) {
+      const categoryBases = listSvgsInDir(path.posix.join('02_icones', cat), cat).filter((i) =>
+        isBaseIcon(i.file),
+      );
+      bases.push(...categoryBases);
+    }
+  }
+
+  return bases.sort((a, b) => compareIconPaths(a.file, b.file));
+}
+
+export function getGuideIconSections(): GuideIconSection[] {
+  const baseIcons = collectBaseIcons();
+
+  const sections: GuideIconSection[] = baseIcons.length
+    ? [
+        {
+          id: 'base',
+          title: 'Personnages de base',
+          note: 'même forme, même pose',
+          layout: 'row',
+          icons: baseIcons,
+        },
+      ]
+    : [];
 
   const iconesDir = path.join(GUIDE_ROOT, '02_icones');
   if (fs.existsSync(iconesDir)) {
@@ -77,14 +116,13 @@ export function getGuideIconSections(): GuideIconSection[] {
 
     for (const cat of categories) {
       const all = listSvgsInDir(path.posix.join('02_icones', cat), cat);
-      const sceneIcons = all.filter((i) => !i.file.includes('_base'));
-      if (sceneIcons.length === 0) continue;
+      if (all.length === 0) continue;
 
       sections.push({
         id: cat,
         title: cat.charAt(0).toUpperCase() + cat.slice(1),
         layout: 'grid',
-        icons: sceneIcons,
+        icons: sortIconsBaseFirst(all),
       });
     }
   }
@@ -93,7 +131,11 @@ export function getGuideIconSections(): GuideIconSection[] {
 }
 
 export function countGuideIcons(sections: GuideIconSection[]): number {
-  return sections.reduce((n, s) => n + s.icons.length, 0);
+  const seen = new Set<string>();
+  for (const section of sections) {
+    for (const icon of section.icons) seen.add(icon.file);
+  }
+  return seen.size;
 }
 
 export function readGuideMarkdown(relativePath: string): string {
